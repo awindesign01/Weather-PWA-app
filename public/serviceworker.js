@@ -1,10 +1,8 @@
 const CACHE_NAME = "version-1";
 const utlsToCache = ["index.html", "offline.html"];
 
-const salf = this;
-
 // install SW
-salf.addEventListener("install", (e) => {
+this.addEventListener("install", (e) => {
 	e.waitUntil(
 		caches.open(CACHE_NAME).then((res) => {
 			console.log("opened cache");
@@ -14,9 +12,9 @@ salf.addEventListener("install", (e) => {
 });
 
 // listen for requests
-salf.addEventListener("fetch", (e) => {
+this.addEventListener("fetch", (e) => {
 	e.respondWith(
-		caches.match(e.request).then(() => {
+		caches.match(e.request).then((res) => {
 			return fetch(e.request).catch(() => {
 				caches.match("offline.html");
 			});
@@ -25,7 +23,7 @@ salf.addEventListener("fetch", (e) => {
 });
 
 // activate the SW
-salf.addEventListener("activate", (e) => {
+this.addEventListener("activate", (e) => {
 	const cacheWhiteList = [];
 	cacheWhiteList.push(CACHE_NAME);
 
